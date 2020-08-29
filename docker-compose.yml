@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    container_name: rails-docker.db
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '3316:3306'
+    volumes:
+      - ./db/mysql/volumes:/var/lib/mysql
+      - ./docker_db_share:/root/docker_db_share
+  web:
+    # build: .
+    image: teruzoufox/rails-docker
+    container_name: rails-docker.web
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/code
+      - ./static:/static
+    depends_on:
+      - db
+    tty: true # 常時起動用設定
